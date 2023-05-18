@@ -1,67 +1,767 @@
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-<title>EditPaste - Syntax &amp; Usage | AutoHotkey v2</title>
-<meta name="description" content="The EditPaste function pastes the specified string at the caret (text insertion point) in an Edit control." />
-<meta name="ahk:equiv-v1" content="lib/Control.htm#EditPaste" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link href="../static/theme.css" rel="stylesheet" type="text/css" />
-<script src="../static/content.js" type="text/javascript"></script>
-</head>
-<body>
+function BIHARI(Nc,Type,Search,Write) gg.clearResults() gg.setRanges(Nc) gg.setVisible(false) gg.searchNumber(Search[1][1],Type) local count=gg.getResultCount() local result=gg.getResults(count) gg.clearResults() local data={} local base=Search[1][2] if(count>0)then for i,v in ipairs(result)do v.isUseful=true end for k=2,#Search do local tmp={} local offset=Search[k][2]-base local num=Search[k][1] for i,v in ipairs(result)do tmp[#tmp+1]={} tmp[#tmp].address=v.address+offset tmp[#tmp].flags=v.flags end tmp=gg.getValues(tmp) for i,v in ipairs(tmp)do if(tostring(v.value)~=tostring(num))then result[i].isUseful=false end end end for i,v in ipairs(result)do if(v.isUseful)then data[#data+1]=v.address end end if(#data>0)then gg.toast("\n BIHARI_HACKAR"..#data.."data\n start offset") local t={} local base=Search[1][2] for i=1,#data do for k,w in ipairs(Write)do offset=w[2]-base t[#t+1]={} t[#t].address=data[i]+offset t[#t].flags=Type t[#t].value=w[1] if(w[3]==true)then local item={} item[#item+1]=t[#t] item[#item].freeze=true gg.addListItems(item) end end end gg.setValues(t) gg.sleep(400) gg.toast("\n"..Name.."BIHARI_HACKAR\n BIHARI_HACKAR"..#t.."data") else gg.toast("\n"..Name.."BIHARI_HACKAR") return false end else gg.toast("\n"..Name.."BIHARI") return false end end
 
-<h1>EditPaste</h1>
+function split(szFullString, szSeparator) local nFindStartIndex = 1 local nSplitIndex = 1 local nSplitArray = {} while true do local nFindLastIndex = string.find (szFullString, szSeparator, nFindStartIndex) if not nFindLastIndex then nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, string.len (szFullString)) break end nSplitArray[nSplitIndex] = string.sub (szFullString, nFindStartIndex, nFindLastIndex - 1) nFindStartIndex = nFindLastIndex + string.len (szSeparator) nSplitIndex = nSplitIndex + 1 end return nSplitArray end function xgxc(szpy, qmxg) for x = 1, #(qmxg) do xgpy = szpy + qmxg[x]["offset"] xglx = qmxg[x]["type"] xgsz = qmxg[x]["value"] xgdj = qmxg[x]["freeze"] if xgdj == nil or xgdj == "" then gg.setValues({[1] = {address = xgpy, flags = xglx, value = xgsz}}) else gg.addListItems({[1] = {address = xgpy, flags = xglx, freeze = xgdj, value = xgsz}}) end xgsl = xgsl + 1 xgjg = true end end function xqmnb(qmnb) gg.clearResults() gg.setRanges(qmnb[1]["memory"]) gg.searchNumber(qmnb[3]["value"], qmnb[3]["type"]) if gg.getResultCount() == 0 then gg.toast(qmnb[2]["name"] .. "开启失败") else gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) if gg.getResultCount() == 0 then gg.toast(qmnb[2]["name"] .. "开启失败") else sl = gg.getResults(999999) sz = gg.getResultCount() xgsl = 0 if sz > 999999 then sz = 999999 end for i = 1, sz do pdsz = true for v = 4, #(qmnb) do if pdsz == true then pysz = {} pysz[1] = {} pysz[1].address = sl[i].address + qmnb[v]["offset"] pysz[1].flags = qmnb[v]["type"] szpy = gg.getValues(pysz) pdpd = qmnb[v]["lv"] .. ";" .. szpy[1].value szpd = split(pdpd, ";") tzszpd = szpd[1] pyszpd = szpd[2] if tzszpd == pyszpd then pdjg = true pdsz = true else pdjg = false pdsz = false end end end if pdjg == true then szpy = sl[i].address xgxc(szpy, qmxg) end end if xgjg == true then gg.toast(qmnb[2]["name"] .. "开启成功，一共修改" .. xgsl .. "条数据") else gg.toast(qmnb[2]["name"] .. "未搜索到数据，开启失败") end end end end function SearchWrite(Search, Write, Type) gg.clearResults() gg.setVisible(false) gg.searchNumber(Search[1][1], Type) local count = gg.getResultCount() local result = gg.getResults(count) gg.clearResults() local data = {} local base = Search[1][2] if (count > 0) then for i, v in ipairs(result) do v.isUseful = true end for k=2, #Search do local tmp = {} local offset = Search[k][2] - base local num = Search[k][1] for i, v in ipairs(result) do tmp[#tmp+1] = {} tmp[#tmp].address = v.address + offset tmp[#tmp].flags = v.flags end tmp = gg.getValues(tmp) for i, v in ipairs(tmp) do if ( tostring(v.value) ~= tostring(num) ) then result[i].isUseful = false end end end for i, v in ipairs(result) do if (v.isUseful) then data[#data+1] = v.address end end if (#data > 0) then local t = {} local base = Search[1][2] for i=1, #data do for k, w in ipairs(Write) do offset = w[2] - base t[#t+1] = {} t[#t].address = data[i] + offset t[#t].flags = Type t[#t].value = w[1] if (w[3] == true) then local item = {} item[#item+1] = t[#t] item[#item].freeze = true gg.addListItems(item) end end end gg.setValues(t) gg.toast("开启成功，一共修改"..#t.."条数据") gg.addListItems(t) else gg.toast("未搜索到数据，开启失败", false) return false end else gg.toast("Not Found") return false end end
 
-<p>Pastes the specified string at the caret (text insertion point) in an Edit control.</p>
+function split(szFullString, szSeparator) local nFindStartIndex = 1 local nSplitIndex = 1 local nSplitArray = {} while true do local nFindLastIndex = string.find(szFullString, szSeparator, nFindStartIndex) if not nFindLastIndex then nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, string.len(szFullString)) break end nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, nFindLastIndex - 1) nFindStartIndex = nFindLastIndex + string.len(szSeparator) nSplitIndex = nSplitIndex + 1 end return nSplitArray end function xgxc(szpy, qmxg) for x = 1, #(qmxg) do xgpy = szpy + qmxg[x]["offset"] xglx = qmxg[x]["type"] xgsz = qmxg[x]["value"] gg.setValues({[1] = {address = xgpy, flags = xglx, value = xgsz}}) xgsl = xgsl + 1 end end function xqmnb(qmnb) gg.clearResults() gg.setRanges(qmnb[1]["memory"]) gg.searchNumber(qmnb[3]["value"], qmnb[3]["type"]) if gg.getResultCount() == 0 then gg.toast(qmnb[2]["name"] .. "") else gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) if gg.getResultCount() == 0 then gg.toast(qmnb[2]["name"] .. "") else sl = gg.getResults(999999) sz = gg.getResultCount() xgsl = 0 if sz > 999999 then sz = 999999 end for i = 1, sz do pdsz = true for v = 4, #(qmnb) do if pdsz == true then pysz = {} pysz[1] = {} pysz[1].address = sl[i].address + qmnb[v]["offset"] pysz[1].flags = qmnb[v]["type"] szpy = gg.getValues(pysz) pdpd = qmnb[v]["lv"] .. ";" .. szpy[1].value szpd = split(pdpd, ";") tzszpd = szpd[1] pyszpd = szpd[2] if tzszpd == pyszpd then pdjg = true pdsz = true else pdjg = false pdsz = false end end end if pdjg == true then szpy = sl[i].address xgxc(szpy, qmxg) xgjg = true end end if xgjg == true then gg.toast(qmnb[2]["name"] .. "" .. xgsl .. "") else gg.toast(qmnb[2]["name"] .. "") end end end end
 
-<pre class="Syntax"><span class="func">EditPaste</span> String, Control <span class="optional">, WinTitle, WinText, ExcludeTitle, ExcludeText</span></pre>
+function setvalue(address,flags,value) local tt={} tt[1]={} tt[1].address=address tt[1].flags=flags tt[1].value=value gg.setValues(tt) end
 
-<h2 id="Parameters">Parameters</h2>
-<dl>
-    <dt>String</dt>
-    <dd>
-        <p>Type: <a href="../Concepts.htm#strings">String</a></p>
-        <p>The string to paste.</p>
-    </dd>
-    <dt>Control</dt>
-    <dd>
-        <p>Type: <a href="../Concepts.htm#strings">String</a>, <a href="../Concepts.htm#numbers">Integer</a> or <a href="../Objects.htm">Object</a></p>
-        <p>The control's ClassNN, text or HWND, or an object with a <code>Hwnd</code> property. For details, see <a href="Control.htm#Parameter">The Control Parameter</a>.</p>
-    </dd>
-    <dt>WinTitle</dt>
-    <dd>
-        <p>Type: <a href="../Concepts.htm#strings">String</a>, <a href="../Concepts.htm#numbers">Integer</a> or <a href="../Objects.htm">Object</a></p>
-        <p>A window title or other criteria identifying the target window. See <a href="../misc/WinTitle.htm">WinTitle</a>.</p>
-    </dd>
-    <dt>WinText</dt>
-    <dd>
-        <p>Type: <a href="../Concepts.htm#strings">String</a></p>
-        <p>If present, this parameter must be a substring from a single text element of the target window (as revealed by the included Window Spy utility). Hidden text elements are detected if <a href="DetectHiddenText.htm">DetectHiddenText</a> is ON.</p>
-    </dd>
-    <dt>ExcludeTitle</dt>
-    <dd>
-        <p>Type: <a href="../Concepts.htm#strings">String</a></p>
-        <p>Windows whose titles include this value will not be considered.</p>
-    </dd>
-    <dt>ExcludeText</dt>
-    <dd>
-        <p>Type: <a href="../Concepts.htm#strings">String</a></p>
-        <p>Windows whose text include this value will not be considered.</p>
-    </dd>
-</dl>
+off = ' ✗ oғғ ► '
 
-<h2 id="Error_Handling">Error Handling</h2>
-<p>A <a href="Error.htm#TargetError">TargetError</a> is thrown if the window or control could not be found.</p>
-<p>An <a href="Error.htm#OSError">OSError</a> may be thrown if a message could not be sent to the control.</p>
+on = ' ✓ Oɴ ► '
 
-<h2 id="Remarks">Remarks</h2>
-<p>The effect is similar to pasting by pressing <kbd>Ctrl</kbd>+<kbd>V</kbd>, but this function does not affect the contents of the <a href="A_Clipboard.htm">clipboard</a> or require the control to have the keyboard focus.</p>
-<p>To improve reliability, a delay is done automatically after each use of this function. That delay can be changed via <a href="SetControlDelay.htm">SetControlDelay</a> or by assigning a value to <a href="../Variables.htm#ControlDelay">A_ControlDelay</a>. For details, see <a href="SetControlDelay.htm#Remarks">SetControlDelay remarks</a>.</p>
-<p>Window titles and text are case sensitive. Hidden windows are not detected unless <a href="DetectHiddenWindows.htm">DetectHiddenWindows</a> has been turned on.</p>
+Speed = on
 
-<h2 id="Related">Related</h2>
-<p><a href="ControlSetText.htm">ControlSetText</a>, <a href="Control.htm">Control functions</a></p>
+parasut = off
 
-</body>
-</html>
+HOME = 1
+
+function HOME()
+
+s=gg.multiChoice({
+
+"BYPASS Menu🔰",
+
+"GAME Menu🔫",
+
+"Car Jump🔫",
+
+"Fast Paraşut🪂"..parasut,
+
+"EXIT〽️", 
+
+}, nil, "🔱Asos Vip Script🔱")
+
+if s[1] then bypassmenu() end
+
+if s[2] then gamemenu() end
+
+if s[3] then carjump() end
+
+if s[4] then FP1() end
+
+if s[5] then EXIT() end
+
+end
+
+function FP1()
+
+if parasut == "acıldı" then
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_ANONYMOUS)
+
+gg.searchNumber("4,525,216,907,477,699,789", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.refineNumber("4,525,216,907,477,699,789", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.getResults(1401)
+
+gg.editAll("4,525,216,907,414,147,695", gg.TYPE_QWORD)
+
+gg.clearResults() 
+
+gg.toast("Hızlı Paraşüt Kapalı ") 
+
+parasut = off
+
+else
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_ANONYMOUS)
+
+gg.searchNumber("4,525,216,907,414,147,695", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.refineNumber("4,525,216,907,414,147,695", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.getResults(1401)
+
+gg.editAll("4,525,216,907,477,699,789", gg.TYPE_QWORD)
+
+gg.toast("Hızlı Paraşüt Aktif")
+
+parasut = on
+
+end
+
+gg.toast('\nparasut['..parasut..']')
+
+end
+
+function carjump()
+
+gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("-980", 16)
+
+    gg.getResults(500)
+
+    gg.editAll("707.7", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+ gg.toast("Uçuyorsun fuat abii")
+
+gg.sleep(2000)
+
+gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("707.7", 16)
+
+    gg.getResults(500)
+
+    gg.editAll("-980", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    end
+
+function bypassmenu()
+
+o=gg.multiChoice({
+
+"Wip Logo Bypass🔆",
+
+"Wip Lobby Bypass💫",
+
+"Wip Island Bypass🖼",
+
+"Log Cleaner♨️",
+
+}, nil, "🔱Asos Vip Script🔱")
+
+if o[1] then wlb() end
+
+if o[2] then wlvb() end
+
+if o[3] then wib() end
+
+if o[4] then wlc() end
+
+if o[5] then HOME() end
+
+end
+
+function wlc()--log
+
+end
+
+function wlvb()--lobi
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("578,351,706,144,768;567,356,589,867,008", gg.TYPE_QWORD)
+
+gg.getResults(90094)
+
+gg.editAll("288,233,678,981,562,368", gg.TYPE_QWORD)
+
+gg.clearResults()
+
+gg.searchNumber("572,854,148,005,888;582,749,752,655,872", gg.TYPE_QWORD)
+
+gg.getResults(90094)
+
+gg.editAll("288,233,678,981,562,368", gg.TYPE_QWORD)
+
+gg.clearResults()
+
+gg.searchNumber("564,058,054,983,680;572,854,148,005,888", gg.TYPE_QWORD)
+
+gg.getResults(90094)
+
+gg.editAll("288,233,678,981,562,368", gg.TYPE_QWORD)
+
+gg.clearResults()
+
+gg.searchNumber("582,749,752,655,872;564,058,054,983,680", gg.TYPE_QWORD)
+
+gg.getResults(90094)
+
+gg.editAll("288,233,678,981,562,368", gg.TYPE_QWORD)
+
+gg.clearResults()
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("70,658;131,842", 4)
+
+gg.getResults(90094)
+
+gg.editAll("131,842", 4)
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("134,146;134,402", 4)
+
+gg.getResults(90094)
+
+gg.editAll("131,842", 4)
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("133,890;133,634", 4)
+
+gg.getResults(90094)
+
+gg.editAll("131,842", 4)
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("134,402;131,330", 4)
+
+gg.getResults(90094)
+
+gg.editAll("131,842", 4)
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("133,634", 4)
+
+gg.searchNumber("133,634", 4)
+
+gg.searchNumber("133,634", 4)
+
+gg.getResults(90094)
+
+gg.editAll("131,842", 4)
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_C_ALLOC)
+
+gg.searchNumber("134,658;144,387", 4)
+
+gg.getResults(90094)
+
+gg.editAll("131,842", 4)
+
+gg.alert("Asos Wip Lobby Bypass✔️/nPlay Safe = Conqueror⭕️\nWin Ss:@Asosadmins")
+
+end 
+
+function wlb()--logo
+
+local so = gg.getRangesList("libanogs.so")[1].start 
+
+setvalue(so+"0x35AB9C", 32,"00 00 00 00")
+
+setvalue(so+"0x35AC14", 32,"00 00 00 00")
+
+setvalue(so+"0x35B74C", 32,"00 00 00 00")
+
+setvalue(so+"0x35B834", 32,"00 00 00 00")
+
+setvalue(so+"0x35D944", 32,"00 00 00 00")
+
+setvalue(so+"0x35E788", 32,"00 00 00 00")
+
+setvalue(so+"0x266114", 4,"00 00 00 00")
+
+setvalue(so+"0x266130", 4,"00 00 00 00")
+
+setvalue(so+"0x266184", 4,"00 00 00 00")
+
+setvalue(so+"0x2661A4", 4,"00 00 00 00")
+
+setvalue(so+"0x2661AC", 4,"00 00 00 00")
+
+setvalue(so+"0x2661BC", 4,"00 00 00 00")
+
+gg.alert("Asos Wip Logo Bypass✔️/nPlay Safe = Conqueror⭕️\nWin Ss:@Asosadmins")
+
+end
+
+function wib()--island
+
+gg.alert("Soon")
+
+end
+
+function gamemenu()
+
+g=gg.multiChoice({
+
+"Less Recoil🔫",
+
+"No Shake⚔️",
+
+"Small Cross⚙️",
+
+"Aimbot⭕️️",
+
+"Super Magic Bullet➰️",
+
+" Magic Bullet⛔️",
+
+" X Efect✖️️",
+
+" Ileri Uzanan Kol🔙️️",
+
+" Yukarı Uzanan Kol🏁",
+
+" Micro Speed🦊"..Speed,
+
+}, nil, "🔱Asos Vip Script🔱")
+
+if g[1] then lr() end
+
+if g[2] then ns() end
+
+if g[3] then sc() end
+
+if g[4] then ab() end
+
+if g[5] then smb() end
+
+if g[6] then mb() end
+
+if g[7] then xe() end
+
+if g[8] then iuk() end
+
+if g[9] then yuk() end
+
+if g[10] then micro() end
+
+end
+
+function yuk()
+
+gg.clearResults()
+
+gg.setRanges(gg.REGION_ANONYMOUS)
+
+gg.searchNumber("4138667321167981973", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.refineNumber("4138667321167981973", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.refineNumber("4138667321167981973", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.getResults(99)
+
+gg.editAll("4848124999984742410", gg.TYPE_QWORD)
+
+gg.clearResults()
+
+gg.toast("Stand Scope✔️")
+
+end
+
+function iuk()
+
+ gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("4138667321167981973", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.sleep(140)
+
+    gg.refineNumber("4138667321167981973", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.sleep(140)
+
+    gg.refineNumber("4138667321167981973", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(1401)
+
+    gg.editAll("4848124999984742400", gg.TYPE_QWORD)
+
+    gg.clearResults()
+
+ gg.toast("Sit Scope✔️")
+
+ end
+
+function lr()
+
+local so = gg.getRangesList("libUE4.so")[1].start 
+
+setvalue(so+"0xDB0CF8",16,"00 00 00 00")
+
+gg.toast("Less Recoil✔️")
+
+end
+
+function ns()
+
+local so = gg.getRangesList("libUE4.so")[1].start 
+
+setvalue(so+"0x2A81F08",16,"00 00 00 00")
+
+setvalue(so+"0x26BE594",16,"00 00 00 00")
+
+gg.toast("No Shake✔️")
+
+end
+
+function sc()
+
+local so = gg.getRangesList("libUE4.so")[1].start 
+
+setvalue(so+"0xDB12B8",16,"5.0")
+
+gg.toast("Small Cross✔️")
+
+end
+
+function ab()
+
+so=gg.getRangesList("libUE4.so")[1].start  
+
+py=0x19530cc
+
+setvalue(so+py,16,0)
+
+gg.toast("AimBot✔️")
+
+end
+
+function smb()
+
+qmnb = {
+
+{["memory"] = 32},
+
+{["name"] = " "},
+
+{["value"] = 30.5, ["type"] = 16},
+
+{["lv"] = 25.0, ["offset"] = -4, ["type"] = 16},
+
+}
+
+qmxg = {
+
+{["value"] = 450, ["offset"] = 0, ["type"] = 16},
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+}
+
+xqmnb(qmnb)
+
+qmnb = {
+
+{["memory"] = 32},
+
+{["name"] = " "},
+
+{["value"] = 23.0, ["type"] = 16},
+
+{["lv"] = 25.0, ["offset"] = 4, ["type"] = 16},
+
+}
+
+qmxg = {
+
+{["value"] = 450, ["offset"] = 4, ["type"] = 16},                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+}
+
+xqmnb(qmnb)
+
+gg.clearResults()            
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("25.0;30.5::5", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(2)
+
+    gg.editAll("300", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("23;25;30.5", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.refineNumber("25;30.5", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(100)
+
+    gg.editAll("500.8", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("15;28;16;26;8;18", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(56)
+
+    gg.editAll("-1239", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_CODE_APP)
+
+    gg.searchNumber("-1.1144502e28", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(2)
+
+    gg.editAll("90", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_BAD)
+
+    gg.searchNumber("-88.66608428955;26:512", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("26", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(2)
+
+    gg.editAll("460", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.searchNumber("-88.73961639404;28:512", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("28", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(2)
+
+    gg.editAll("560", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_CODE_APP)
+
+    gg.searchNumber("150;85;45;-129;-85", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("45", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(30)
+
+    gg.editAll("99999", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("23;25;30.5", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("25;30.5", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(100)
+
+    gg.editAll("500.8", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_BAD)
+
+    gg.searchNumber("26", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(2)
+
+    gg.editAll("-460", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.searchNumber("28", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(2)
+
+    gg.editAll("-1200", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("9.201618;30.5;25", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("25;30.5", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(10)
+
+    gg.editAll("150", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("15;28;16;26;8;18", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(56)
+
+    gg.editAll("-1339", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+    gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("10;45", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("10", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(900)
+
+    gg.editAll("1100", gg.TYPE_FLOAT)
+
+    gg.clearResults()
+
+ gg.toast("Super Magic Bullet💥")
+
+ end
+
+ function mb()
+
+ gg.searchNumber("69.5;33",gg.TYPE_FLOAT)
+
+gg.getResults(10)
+
+gg.editAll("257",gg.TYPE_FLOAT)
+
+gg.clearResults() 
+
+gg.toast("Magic Bullet✔️")
+
+end
+
+function xe()
+
+gg.clearResults()
+
+    gg.setRanges(gg.REGION_ANONYMOUS)
+
+    gg.searchNumber("10;45", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.refineNumber("10", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+    gg.getResults(8888)
+
+    gg.editAll("9999", gg.TYPE_FLOAT)
+
+ gg.toast("X efect✔️")
+
+ end
+
+function micro()
+
+if micro== off then 
+
+gg.setRanges(gg.REGION_ANONYMOUS)
+
+gg.searchNumber("20000;750;0.0001;0.0005 ", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.searchNumber("0.0005", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.getResults(1401)
+
+gg.editAll("0.05000000075", gg.TYPE_FLOAT)
+
+gg.clearResults()
+
+so = gg.getRangesList("libUE4.so")[1].start  
+
+py = 0x55F2FE8 
+
+setvalue(so + py, 16, 0.286)
+
+so = gg.getRangesList("libUE4.so")[1].start  
+
+py = 0x5C8C98C 
+
+setvalue(so + py, 16, 21.5)
+
+gg.toast("Fʟᴀsʜ Eɴᴀʙʟᴇ")
+
+micro= on
+
+else
+
+gg.setRanges(gg.REGION_ANONYMOUS)
+
+gg.searchNumber("20000;750;0.0001;0.05000000075 ", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.searchNumber("0.05000000075", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+
+gg.getResults(1401)
+
+gg.editAll("0.0005", gg.TYPE_FLOAT)
+
+gg.clearResults()
+
+so = gg.getRangesList("libUE4.so")[1].start  
+
+py = 0x55F2FE8 
+
+setvalue(so + py, 16, 1.0e-6)
+
+so = gg.getRangesList("libUE4.so")[1].start  
+
+py = 0x5C8C98C 
+
+setvalue(so + py, 16, 25.72529029846)
+
+gg.toast("Fʟᴀsʜ Dɪꜱᴀʙʟᴇ")
+
+micro = off
+
+end
+
+end
+
+function EXIT()
+
+print("ASOS WIP SCRIPT NO BAN☣️")
+
+print("Win ss/@Asosadmins🔆")
+
+print("Script Maker:@hyperv1🔆")
+
+os.exit()
+
+end
+
+while true do
+
+  if gg.isVisible(true) then
+
+    iBug = 1
+
+    gg.setVisible(false)
+
+  end
+
+  gg.clearResults()
+
+  if iBug == 1 then
+
+    HOME()
+
+  end  
+
+end
